@@ -1,6 +1,15 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-void main() => runApp(MyApp());
+import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart' as pathProvider;
+
+Future<void> main() async {
+  Directory directory = await pathProvider.getApplicationDocumentsDirectory();
+  Hive.init(directory.path);
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override

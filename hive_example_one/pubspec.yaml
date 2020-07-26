@@ -28,6 +28,9 @@ dependencies:
   provider: ^4.3.1
   path_provider: ^1.6.5
 
+dependency_overrides:
+  analyzer: 0.39.14
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -77,3 +80,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+scripts:
+  build: flutter pub run build_runner build --delete-conflicting-outputs
+  watch: flutter pub run build_runner watch --delete-conflicting-outputs --use-polling-watcher
