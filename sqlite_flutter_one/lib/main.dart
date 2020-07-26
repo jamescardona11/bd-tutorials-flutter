@@ -31,17 +31,12 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-                primaryColor: Color(0xff006837),
-                primaryColorDark: Color(0xff004012),
-                accentColor: Color(0xffc75f00)),
+                primaryColor: Color(0xff006837), primaryColorDark: Color(0xff004012), accentColor: Color(0xffc75f00)),
             home: MoviesListPage(),
             onGenerateRoute: (settings) {
               return MaterialPageRoute(
                 builder: (context) {
-                  return _makeRoute(
-                      context: context,
-                      routeName: settings.name,
-                      arguments: settings.arguments);
+                  return _makeRoute(context: context, routeName: settings.name, arguments: settings.arguments);
                 },
                 maintainState: true,
                 fullscreenDialog: false,
@@ -53,10 +48,7 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  Widget _makeRoute(
-      {@required BuildContext context,
-      @required String routeName,
-      Object arguments}) {
+  Widget _makeRoute({@required BuildContext context, @required String routeName, Object arguments}) {
     final Widget child = _buildRoute(
       context: context,
       routeName: routeName,

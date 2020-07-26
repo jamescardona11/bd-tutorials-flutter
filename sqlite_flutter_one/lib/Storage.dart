@@ -1,4 +1,3 @@
-
 import 'data/SqlitePersistence.dart';
 import 'models/Movie.dart';
 
@@ -19,9 +18,8 @@ class Storage {
   }
 
   Future<List<Movie>> watchedMovies(String query) async {
-    final objects = query?.isNotEmpty == true
-        ? await _repository.findObjects(query)
-        : await _repository.getUniqueObjects();
+    final objects =
+        query?.isNotEmpty == true ? await _repository.findObjects(query) : await _repository.getUniqueObjects();
     return objects.map((map) => Movie().fromMap(map)).toList();
   }
 
