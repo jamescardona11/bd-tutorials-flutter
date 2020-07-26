@@ -12,124 +12,142 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     context.watch<HomeModel>().getItem();
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
 
     return Consumer<HomeModel>(
-      builder: (context, model, child) => Scaffold(
-        backgroundColor: Colors.grey[200],
-        body: Padding(
-          padding: EdgeInsets.only(top: size.height * 0.06),
-          child: Column(
-            children: [
-              Text(
-                'Hive Inventory',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Container(
-                height: size.height * 0.9,
-                child: ListView.builder(
-                  itemCount: model.inventoryList.length,
-                  itemBuilder: (context, index) {
-                    Inventory inv = model.inventoryList[index];
-                    return Container(
-                      height: size.height * 0.13,
-                      margin: EdgeInsets.symmetric(vertical: size.height * 0.02, horizontal: size.width * 0.045),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            margin: EdgeInsets.only(left: size.width * 0.02),
-                            width: size.width * 0.16,
-                            decoration: BoxDecoration(
-                              color: Colors.green[600],
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              child: Icon(
-                                Icons.home,
-                                color: Colors.white,
+      builder: (context, model, child) {
+        return Scaffold(
+          backgroundColor: Colors.grey[200],
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(top: height * 0.06),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    'Hive Inventory',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Container(
+                    height: 0.9 * height,
+                    child: ListView.builder(
+                      itemCount: model.inventoryList.length,
+                      itemBuilder: (context, index) {
+                        Inventory inv = model.inventoryList[index];
+                        return Container(
+                          margin: EdgeInsets.symmetric(
+                            vertical: 0.02 * height,
+                            horizontal: 0.045 * width,
+                          ),
+                          height: 0.13 * height,
+                          // width: 50.width,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                margin: EdgeInsets.only(left: 0.02 * width),
+                                width: 0.16 * width,
+                                decoration: BoxDecoration(
+                                  color: Colors.green[600],
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.home,
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: size.height * 0.03,
-                              horizontal: size.width * 0.03,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  inv.name,
-                                  style: TextStyle(
-                                    color: Colors.green[600],
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 0.03 * height,
+                                  horizontal: 0.03 * width,
                                 ),
-                                SizedBox(
-                                  height: 5,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      inv.name,
+                                      style: TextStyle(
+                                        color: Colors.green[600],
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 0.01 * height,
+                                    ),
+                                    Text(
+                                      inv.description,
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  inv.description,
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: size.width * 0.08),
-                                  child: PopupMenuButton(
-                                    onSelected: (item) {
-                                      switch (item) {
-                                        case 'update':
-                                          nameController.text = inv.name;
-                                          descriptionController.text = inv.description;
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 0.08 * width),
+                                child: PopupMenuButton(
+                                  onSelected: (item) {
+                                    switch (item) {
+                                      case 'update':
+                                        nameController.text = inv.name;
+                                        descriptionController.text = inv.description;
 
-                                          inputItemDialog(context, 'update', index);
-                                          break;
-                                        case 'delete':
-                                          model.deleteItem(index);
-                                      }
-                                    },
-                                    itemBuilder: (context) {
-                                      return [
-                                        PopupMenuItem(
-                                          value: 'update',
-                                          child: Text('Update'),
-                                        ),
-                                        PopupMenuItem(
-                                          value: 'delete',
-                                          child: Text('Delete'),
-                                        ),
-                                      ];
-                                    },
-                                  ),
+                                        inputItemDialog(context, 'update', index);
+                                        break;
+                                      case 'delete':
+                                        model.deleteItem(index);
+                                    }
+                                  },
+                                  itemBuilder: (context) {
+                                    return [
+                                      PopupMenuItem(
+                                        value: 'update',
+                                        child: Text('Update'),
+                                      ),
+                                      PopupMenuItem(
+                                        value: 'delete',
+                                        child: Text('Delete'),
+                                      ),
+                                    ];
+                                  },
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              inputItemDialog(context, 'add');
+            },
+            child: Icon(
+              Icons.add,
+              color: Colors.white,
+              size: 0.08 * width,
+            ),
+          ),
+        );
+      },
     );
   }
 
   inputItemDialog(BuildContext context, String action, [int index]) {
     var inventoryDb = Provider.of<HomeModel>(context, listen: false);
-    final size = MediaQuery.of(context).size;
-
+    final height = MediaQuery.of(context).size.height;
     showDialog(
       context: context,
       builder: (context) {
@@ -140,7 +158,7 @@ class HomePage extends StatelessWidget {
               right: 15,
               top: 40,
             ),
-            height: size.height * 0.45,
+            height: 0.45 * height,
             child: SingleChildScrollView(
               child: Form(
                 key: _formKey,
@@ -194,7 +212,14 @@ class HomePage extends StatelessWidget {
                               name: nameController.text,
                               description: descriptionController.text,
                             ));
-                          } else {}
+                          } else {
+                            await inventoryDb.updateItem(
+                                index,
+                                Inventory(
+                                  name: nameController.text,
+                                  description: descriptionController.text,
+                                ));
+                          }
 
                           nameController.clear();
                           descriptionController.clear();
