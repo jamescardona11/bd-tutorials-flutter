@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_example_one/home/home_page.dart';
 import 'package:hive_example_one/model/inventory_model.dart';
 import 'package:path_provider/path_provider.dart' as pathProvider;
 
@@ -20,14 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Material App',
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('Material App Bar'),
-        ),
-        body: Center(
-          child: Container(
-            child: Text('Hello World'),
-          ),
-        ),
+        body: HomePage(),
       ),
     );
   }
