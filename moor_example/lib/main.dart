@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider(
-      create: (context) => Database(),
+      create: (context) => Database().taskDao,
       child: MaterialApp(
         title: 'Material App',
         home: Scaffold(

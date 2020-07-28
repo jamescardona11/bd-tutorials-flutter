@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moor_example/data/moor_database.dart';
+import 'package:moor_flutter/moor_flutter.dart';
 import 'package:provider/provider.dart';
 
 class NewTaskInput extends StatefulWidget {
@@ -37,12 +38,12 @@ class _NewTaskInputState extends State<NewTaskInput> {
               if (taskName.length > 0 && newTaskDate != null) {
                 debugPrint('Here');
 
-                final database = Provider.of<Database>(context, listen: false);
-                final task = Task(
-                  name: taskName,
-                  dueDate: newTaskDate,
+                final dao = Provider.of<TaskDao>(context, listen: false);
+                final task = TasksCompanion(
+                  name: Value(taskName),
+                  dueDate: Value(newTaskDate),
                 );
-                database.insertTask(task);
+                dao.insertTask(task);
                 resetValuesAfterSubmit();
               }
             },

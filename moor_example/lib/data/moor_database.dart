@@ -3,7 +3,7 @@ import 'package:moor_flutter/moor_flutter.dart';
 
 part 'moor_database.g.dart';
 
-@UseMoor(tables: [Tasks])
+@UseMoor(tables: [Tasks], daos: [TaskDao])
 class Database extends _$Database {
   Database()
       : super((FlutterQueryExecutor.inDatabaseFolder(
@@ -14,12 +14,6 @@ class Database extends _$Database {
 
   @override
   int get schemaVersion => 1;
-
-  Future<List<Task>> getAllTasks() => select(tasks).get();
-  Stream<List<Task>> watchAllTasks() => select(tasks).watch();
-  Future insertTask(Task task) => into(tasks).insert(task);
-  Future updateTask(Task task) => update(tasks).replace(task);
-  Future deleteTask(Task task) => delete(tasks).delete(task);
 }
 
 class Tasks extends Table {
@@ -29,14 +23,7 @@ class Tasks extends Table {
   BoolColumn get completed => boolean().withDefault(Constant(false))();
 }
 
-/*@UseDao(
-  tables: [Tasks],
-  queries: {
-// An implementation of this query will be generated inside the _$TaskDaoMixin
-// Both completeTasksGenerated() and watchCompletedTasksGenerated() will be created.
-    'completedTasksGenerated': 'SELECT * FROM tasks WHERE completed = 1 ORDER BY due_date DESC, name;'
-  },
-)
+@UseDao(tables: [Tasks])
 class TaskDao extends DatabaseAccessor<Database> with _$TaskDaoMixin {
   final Database db;
 
@@ -44,9 +31,9 @@ class TaskDao extends DatabaseAccessor<Database> with _$TaskDaoMixin {
 
   Future<List<Task>> getAllTasks() => select(tasks).get();
   //Stream<List<Task>> watchAllTasks() => select(tasks).watch();
-  Future insertTask(Task task) => into(tasks).insert(task);
-  Future updateTask(Task task) => update(tasks).replace(task);
-  Future deleteTask(Task task) => delete(tasks).delete(task);
+  Future insertTask(Insertable<Task> task) => into(tasks).insert(task);
+  Future updateTask(Insertable<Task> task) => update(tasks).replace(task);
+  Future deleteTask(Insertable<Task> task) => delete(tasks).delete(task);
 
   Stream<List<Task>> watchAllTasks() {
     // Wrap the whole select statement in parenthesis
@@ -78,4 +65,4 @@ class TaskDao extends DatabaseAccessor<Database> with _$TaskDaoMixin {
           ..where((t) => t.completed.equals(true)))
         .watch();
   }
-}*/
+}
