@@ -5,10 +5,21 @@ part 'moor_database.g.dart';
 
 @UseMoor(tables: [Tasks])
 class Database extends _$Database {
-  Database(QueryExecutor e) : super(e);
+  Database()
+      : super((FlutterQueryExecutor.inDatabaseFolder(
+          path: 'db.sqlite',
+          // Good for debugging - prints SQL in the console
+          logStatements: true,
+        )));
 
   @override
   int get schemaVersion => 1;
+
+  Future<List<Task>> getAllTasks() => select(tasks).get();
+  Stream<List<Task>> watchAllTasks() => select(tasks).watch();
+  Future insertTask(Task task) => into(tasks).insert(task);
+  Future updateTask(Task task) => update(tasks).replace(task);
+  Future deleteTask(Task task) => delete(tasks).delete(task);
 }
 
 class Tasks extends Table {
