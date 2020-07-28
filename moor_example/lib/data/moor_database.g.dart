@@ -128,12 +128,11 @@ class TasksCompanion extends UpdateCompanion<Task> {
     this.completed = const Value.absent(),
   });
   TasksCompanion.insert({
-    @required int id,
+    this.id = const Value.absent(),
     @required String name,
     this.dueDate = const Value.absent(),
     this.completed = const Value.absent(),
-  })  : id = Value(id),
-        name = Value(name);
+  }) : name = Value(name);
   static Insertable<Task> custom({
     Expression<int> id,
     Expression<String> name,
@@ -249,8 +248,6 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
-    } else if (isInserting) {
-      context.missing(_idMeta);
     }
     if (data.containsKey('name')) {
       context.handle(
@@ -270,7 +267,7 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id, name};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Task map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;

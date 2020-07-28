@@ -13,6 +13,7 @@ class NewTaskInput extends StatefulWidget {
 
 class _NewTaskInputState extends State<NewTaskInput> {
   DateTime newTaskDate;
+  String taskName = '';
   TextEditingController controller;
 
   @override
@@ -30,6 +31,22 @@ class _NewTaskInputState extends State<NewTaskInput> {
         children: <Widget>[
           _buildTextField(context),
           _buildDateButton(context),
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              if (taskName.length > 0 && newTaskDate != null) {
+                debugPrint('Here');
+
+                final database = Provider.of<Database>(context, listen: false);
+                final task = Task(
+                  name: taskName,
+                  dueDate: newTaskDate,
+                );
+                database.insertTask(task);
+                resetValuesAfterSubmit();
+              }
+            },
+          )
         ],
       ),
     );
@@ -40,14 +57,8 @@ class _NewTaskInputState extends State<NewTaskInput> {
       child: TextField(
         controller: controller,
         decoration: InputDecoration(hintText: 'Task Name'),
-        onSubmitted: (inputName) {
-          final database = Provider.of<Database>(context);
-          final task = Task(
-            name: inputName,
-            dueDate: newTaskDate,
-          );
-          database.insertTask(task);
-          resetValuesAfterSubmit();
+        onChanged: (inputName) {
+          taskName = inputName;
         },
       ),
     );
@@ -69,7 +80,8 @@ class _NewTaskInputState extends State<NewTaskInput> {
 
   void resetValuesAfterSubmit() {
     setState(() {
-      newTaskDate = null;
+      //newTaskDate = null; //for testing
+      taskName = '';
       controller.clear();
     });
   }
